@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ES2020 features</title>
+  </head>
+  <body>
+    <form>
+      <div>
+        <input type="radio" id="add" value="add" name="operation">Add </input>
+      </div>
+      <div>
+        <input type="radio" id="subtract" value="subtract" name="operation">Subtract</input>
+      </div>
+
+      <p>The operation is <span id="selectedOperation"></span> and the result is: <span id="result"></span> </p>
+    </form>
+    <script>
+      const addInput = document.getElementById('add');
+      const subtractInput = document.getElementById('subtract');
+      const selectedOperationEl = document.getElementById('selectedOperation');
+      const resultEl = document.getElementById('result');
+
+      const handleChange = event => {
+        const { value } = event.target;
+
+        selectedOperationEl.innerText = value.toUpperCase();
+
+        import(`./${value}.js`)
+          .then(module => {
+            resultEl.innerText = module.default(7, 4);
+          })
+          .catch(error => console.error(error));
+      };
+
+      addInput.addEventListener('click', handleChange);
+      subtractInput.addEventListener('click', handleChange);
+    </script>
+  </body>
+</html>
